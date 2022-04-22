@@ -1,0 +1,49 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://assets/Mages Character Pack/Mage 1/16x16 Mage 1 attacks.png" type="Texture" id=1]
+[ext_resource path="res://ProjectileLight.gd" type="Script" id=2]
+
+[sub_resource type="AtlasTexture" id=1]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 0, 64, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=2]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 64, 64, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=3]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 128, 64, 64, 64 )
+
+[sub_resource type="SpriteFrames" id=4]
+animations = [ {
+"frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ) ],
+"loop": true,
+"name": "projectile",
+"speed": 5.0
+} ]
+
+[sub_resource type="CapsuleShape2D" id=5]
+radius = 2.49999
+height = 5.00001
+
+[node name="ProjectileLight" type="KinematicBody2D"]
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="ProjectileLightAnimation" type="AnimatedSprite" parent="."]
+frames = SubResource( 4 )
+animation = "projectile"
+frame = 1
+speed_scale = 2.0
+playing = true
+
+[node name="ProjectileLightCollision" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 0.5 )
+rotation = 1.5708
+shape = SubResource( 5 )
