@@ -6,7 +6,9 @@ const SPEED = 150
 const GRAVITY = 30
 const JUMP = -600
 onready var timer = get_node("Timer")
+onready var hitTimer = get_node("HitTimer")
 var firing = false
+var hit = false
 var projectile = preload("res://ProjectileLight.tscn")
 var facing = 1
 var jumpCount = 0
@@ -15,6 +17,8 @@ var lives = 3
 func _ready():
 	timer.set_wait_time(.8)
 	timer.set_one_shot(true)
+	hitTimer.set_wait_time(.5)
+	hitTimer.set_one_shot(true)
 
 func shoot_projectile():
 	var spell = projectile.instance()
@@ -45,7 +49,7 @@ func _physics_process(_delta):
 			velocity.y = (JUMP * .70)
 		jumpCount += 1
 		
-	if Input.is_action_just_pressed("fire_projectile_light") and firing == false:
+	if Input.is_action_just_pressed("fire_projectile_light") and not firing and not hit:
 		firing = true
 		$PlayerAnimations.speed_scale = 2;
 		$PlayerAnimations.play("attack_g")
@@ -53,21 +57,21 @@ func _physics_process(_delta):
 
 	### handle some animatons stuff
 	if velocity.x > 5 or velocity.x < -5:
-		if firing == false:
+		if not firing and not hit:
 			$PlayerAnimations.play("walk_g")
 			$PlayerAnimations.speed_scale = 1.7
 		
 	if velocity.x < 5 and velocity.x > -5:
-		if firing == false:
+		if not firing and not hit:
 			$PlayerAnimations.play("idle_g")
 			$PlayerAnimations.speed_scale = 1.3
 		
 	if (velocity.y < -5 or velocity.y > 5) and (velocity.x < 5 and velocity.x > -5):
-		if firing == false:
+		if not firing and not hit:
 			$PlayerAnimations.play("idle_a")
 			$PlayerAnimations.speed_scale = 1.3
 	elif (velocity.y < -5 or velocity.y > 5) and (velocity.x > 5 or velocity.x < -5):
-		if firing == false:
+		if not firing and not hit:
 			$PlayerAnimations.play("walk_a")
 			$PlayerAnimations.speed_scale = 1.3
 	
@@ -88,6 +92,15 @@ func hide_show_lives():
 		hud.get_child(1).hide()
 		
 	
+	
+func hurt(amount):
+	hit = true
+	$PlayerAnimations.play("hit")
+	hitTimer.start()
+	lives -= amount
+	hide_show_lives()
+	if lives == 0:
+		get_tree().change_scene("res://BaseLevel.tscn")
 
 func _on_Timer_timeout():
 	shoot_projectile()
@@ -103,3 +116,8 @@ func _on_FallZone_body_entered(_body):
 		position.y = 50
 	else:
 		get_tree().change_scene("res://BaseLevel.tscn")
+
+
+func _on_HitTimer_timeout():
+	hit = false
+	$PlayerAnimations.play("idle_g")

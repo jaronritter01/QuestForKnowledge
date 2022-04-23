@@ -16,7 +16,6 @@ func _on_Area2D_body_entered(body):
 	if body.name == "ProjectileLight":
 		health -= 1
 		body.queue_free()
-
-
-func _on_slimeCol_area_entered(area):
-	area.get_parent().velocity.x *= -1
+		
+	if body.name == "Player":
+		body.hurt(1)
