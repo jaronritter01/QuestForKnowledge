@@ -31,6 +31,8 @@ radius = 2.49999
 height = 5.00001
 
 [node name="ProjectileLight" type="KinematicBody2D"]
+collision_layer = 8
+collision_mask = 34
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_group_": true
