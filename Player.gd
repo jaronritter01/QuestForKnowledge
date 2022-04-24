@@ -9,12 +9,14 @@ onready var timer = get_node("Timer")
 onready var hitTimer = get_node("HitTimer")
 var firing = false
 var hit = false
+var hover = false
 var projectile = preload("res://ProjectileLight.tscn")
 var facing = 1
 var jumpCount = 0
 var lives = 3
 var player = self
 var can_move = true
+var can_hover = true
 
 func _ready():
 	timer.set_wait_time(.8)
@@ -33,7 +35,9 @@ func shoot_projectile():
 func _physics_process(_delta):
 	if is_on_floor():
 		jumpCount = 0
-	### run by game 60x/sec
+		hover = false
+		can_hover = true
+	
 	if can_move:
 		if Input.is_action_pressed("move_left"):
 			velocity.x = -SPEED
@@ -54,27 +58,39 @@ func _physics_process(_delta):
 		
 		if Input.is_action_just_pressed("fire_projectile_light") and not firing and not hit:
 			firing = true
-			$PlayerAnimations.speed_scale = 2;
-			$PlayerAnimations.play("attack_g")
+			if is_on_floor():
+				$PlayerAnimations.speed_scale = 2;
+				$PlayerAnimations.play("attack_a")
+			else:
+				$PlayerAnimations.speed_scale = 2;
+				$PlayerAnimations.play("attack_g")
 			timer.start()
+			
+		if Input.is_action_just_pressed("hover") and not is_on_floor() and can_hover:
+			$HoverTimer.start()
+			
+		if Input.is_action_pressed("hover") and not is_on_floor() and can_hover:
+			if not (velocity.x > 5 or velocity.x < -5) and not firing:
+				$PlayerAnimations.animation = "idle_a"
+				$PlayerAnimations.play("idle_a")
+			hover = true
+			velocity.y = -GRAVITY
 
 	### handle some animatons stuff
 	if velocity.x > 5 or velocity.x < -5:
 		if not firing and not hit:
-			$PlayerAnimations.play("walk_g")
+			if not hover:
+				$PlayerAnimations.play("walk_g")
+			else:
+				$PlayerAnimations.play("walk_a")
 			$PlayerAnimations.speed_scale = 1.7
-		
-	if velocity.x < 5 and velocity.x > -5:
-		if not firing and not hit:
+	
+	if not hover and not hit and not firing:
+		if velocity.x < 5 and velocity.x > -5:
 			$PlayerAnimations.play("idle_g")
 			$PlayerAnimations.speed_scale = 1.3
 		
-	if (velocity.y < -5 or velocity.y > 5) and (velocity.x < 5 and velocity.x > -5):
-		if not firing and not hit:
-			$PlayerAnimations.play("idle_a")
-			$PlayerAnimations.speed_scale = 1.3
-	elif (velocity.y < -5 or velocity.y > 5) and (velocity.x > 5 or velocity.x < -5):
-		if not firing and not hit:
+		if not is_on_floor():
 			$PlayerAnimations.play("walk_a")
 			$PlayerAnimations.speed_scale = 1.3
 	
@@ -161,4 +177,9 @@ func _on_DeathTimer_timeout():
 
 func _on_DeathAnimation_timeout():
 	hide()
-	
+
+
+func _on_HoverTimer_timeout():
+	velocity.y = GRAVITY
+	can_hover = false
+	hover = false

@@ -20,7 +20,7 @@ shape = SubResource( 1 )
 [node name="PlayerAnimations" type="AnimatedSprite" parent="."]
 frames = ExtResource( 1 )
 animation = "idle_g"
-frame = 1
+frame = 2
 playing = true
 offset = Vector2( 1, -7 )
 
@@ -36,7 +36,12 @@ one_shot = true
 wait_time = 0.6
 one_shot = true
 
+[node name="HoverTimer" type="Timer" parent="."]
+wait_time = 1.75
+one_shot = true
+
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 [connection signal="timeout" from="HitTimer" to="." method="_on_HitTimer_timeout"]
 [connection signal="timeout" from="DeathTimer" to="." method="_on_DeathTimer_timeout"]
 [connection signal="timeout" from="DeathAnimation" to="." method="_on_DeathAnimation_timeout"]
+[connection signal="timeout" from="HoverTimer" to="." method="_on_HoverTimer_timeout"]
