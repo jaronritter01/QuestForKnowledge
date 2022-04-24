@@ -114,13 +114,14 @@ func hurt(amount):
 	$PlayerAnimations.play("hit")
 	set_collision_layer_bit(0, false)
 	set_collision_mask_bit(5, false)
-	hitTimer.start()
 	lives -= amount
 	hide_show_lives()
 	if lives <= 0:
 		set_collision_layer_bit(0, false)
 		set_collision_mask_bit(5, false)
 		reset()
+	else:
+		hitTimer.start()
 
 func reset():
 	$PlayerAnimations.play("death")

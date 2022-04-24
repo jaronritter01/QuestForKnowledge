@@ -13,6 +13,9 @@ func _ready():
 		$AnimatedSprite.flip_h = true
 		
 	$FloorDetector.enabled = not can_fall
+	
+	if not can_fall:
+		set_modulate(Color(1, 1, 15))
 
 func _physics_process(delta):
 	if is_on_wall() or not $FloorDetector.is_colliding() and not can_fall and is_on_floor():
@@ -43,15 +46,18 @@ func _on_SquashChecker_body_entered(body):
 
 
 func _on_SidesChecker_body_entered(body):
+	### fix this bug where player gets stun locked
 	if body.name == "Player":
 		body.hurt(1)
 		body.recoil(global_transform.origin.x)
 		if direction != body.facing:
 			flip()
-		elif direction == -1 and body.global_transform.origin.x < self.global_transform.origin.x:
+		elif direction == -1 and body.global_transform.origin.x <= self.global_transform.origin.x:
 			flip()
-		elif direction == 1 and body.global_transform.origin.x > self.global_transform.origin.x:
+		elif direction == 1 and body.global_transform.origin.x >= self.global_transform.origin.x:
 			flip()
+		
+
 		
 	if body.name == "ProjectileLight":
 		health -= 1
