@@ -106,7 +106,6 @@ position = Vector2( 198, 387 )
 
 [node name="Slime" parent="Enemies" instance=ExtResource( 6 )]
 position = Vector2( 0, 0 )
-collision_mask = 10
 can_fall = false
 
 [connection signal="body_entered" from="FallZone" to="Player" method="_on_FallZone_body_entered"]

@@ -18,6 +18,9 @@ func _ready():
 		set_modulate(Color(1, 1, 15))
 
 func _physics_process(delta):
+	if $FloorDetector.get_collider() != null: 
+		if $FloorDetector.get_collider().name != "TileMap" and $FloorDetector.get_collider().name != "TileMap2":
+			print($FloorDetector.get_collider())
 	if is_on_wall() or not $FloorDetector.is_colliding() and not can_fall and is_on_floor():
 		flip()
 	
@@ -25,6 +28,7 @@ func _physics_process(delta):
 	velocity.x =  SPEED * direction
 	### NOTE: must tell what direction is up for the is_on_wall() to work
 	velocity = move_and_slide(velocity, Vector2.UP)
+	
 func handle_death():
 	SPEED = 0
 	set_collision_layer_bit(5, false)
@@ -35,9 +39,9 @@ func handle_death():
 	$SidesChecker.set_collision_mask_bit(0, false)
 	
 func _on_SquashChecker_body_entered(body):
-	$AnimatedSprite.play("squash")
-	handle_death()
 	if body.name == "Player":
+		$AnimatedSprite.play("squash")
+		handle_death()
 		body.bounce()
 		health -= 1
 		
@@ -52,16 +56,17 @@ func _on_SidesChecker_body_entered(body):
 		body.recoil(global_transform.origin.x)
 		if direction != body.facing:
 			flip()
-		elif direction == -1 and body.global_transform.origin.x <= self.global_transform.origin.x:
+		if direction == -1 and body.global_transform.origin.x <= self.global_transform.origin.x:
 			flip()
 		elif direction == 1 and body.global_transform.origin.x >= self.global_transform.origin.x:
 			flip()
-		
 
-		
 	if body.name == "ProjectileLight":
 		health -= 1
 		body.queue_free()
+		
+	if body.name == "ProjectileHeavy":
+		health -= 2
 	
 	if health <= 0:
 		$AnimatedSprite.play("hit")

@@ -11,18 +11,13 @@ var firing = false
 var hit = false
 var hover = false
 var projectile = preload("res://ProjectileLight.tscn")
+var heavy = preload("res://ProjectileHeavy.tscn")
 var facing = 1
 var jumpCount = 0
 var lives = 3
 var player = self
 var can_move = true
 var can_hover = true
-
-func _ready():
-	timer.set_wait_time(.8)
-	timer.set_one_shot(true)
-	hitTimer.set_wait_time(.5)
-	hitTimer.set_one_shot(true)
 
 func shoot_projectile():
 	var spell = projectile.instance()
@@ -32,6 +27,14 @@ func shoot_projectile():
 	scence.add_child(spell)
 	spell.shoot(facing)
 
+func shoot_heavy():
+	var spell = heavy.instance()
+	var scence = get_tree().current_scene
+	spell.position.x = self.position.x + (10 * facing)
+	spell.position.y = self.position.y
+	scence.add_child(spell)
+	spell.shoot(facing)
+	
 func _physics_process(_delta):
 	if is_on_floor():
 		jumpCount = 0
@@ -60,11 +63,21 @@ func _physics_process(_delta):
 			firing = true
 			if is_on_floor():
 				$PlayerAnimations.speed_scale = 2;
-				$PlayerAnimations.play("attack_a")
+				$PlayerAnimations.play("spell_light_g")
 			else:
 				$PlayerAnimations.speed_scale = 2;
-				$PlayerAnimations.play("attack_g")
+				$PlayerAnimations.play("spell_light_a")
 			timer.start()
+			
+		if Input.is_action_just_pressed("heavy_attack") and not firing and not hit:
+			firing = true
+			if is_on_floor():
+				$PlayerAnimations.speed_scale = 2;
+				$PlayerAnimations.play("attack_g")
+			else:
+				$PlayerAnimations.speed_scale = 2;
+				$PlayerAnimations.play("attack_a")
+			$HeavyTimer.start()
 			
 		if Input.is_action_just_pressed("hover") and not is_on_floor() and can_hover:
 			$HoverTimer.start()
@@ -183,3 +196,9 @@ func _on_HoverTimer_timeout():
 	velocity.y = GRAVITY
 	can_hover = false
 	hover = false
+
+
+func _on_HeavyTimer_timeout():
+	shoot_heavy()
+	firing = false
+	$PlayerAnimations.play("idle_g")
