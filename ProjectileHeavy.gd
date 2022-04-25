@@ -17,6 +17,10 @@ func shoot(direction):
 	scene.add_child(self)
 	$FizzleTimer.start()
 
+func fizzle():
+	$ProjectileHeavyAnimation.play("fizzle")
+	$RemoveTimer.start()
+	
 func _physics_process(_delta):
 	if position.x < -1024 or position.x > 10000:
 		queue_free()

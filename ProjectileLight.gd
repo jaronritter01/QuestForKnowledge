@@ -30,3 +30,6 @@ func _physics_process(_delta):
 		if collision:
 			if collision.collider.name == "TileMap" or collision.collider.name == "TileMap2":
 				queue_free()
+			elif collision.collider.name=="ProjectileHeavy":
+				collision.collider.fizzle()
+				queue_free()
