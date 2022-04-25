@@ -36,15 +36,14 @@ extents = Vector2( 12, 5.5 )
 
 [node name="Slime" type="KinematicBody2D"]
 position = Vector2( 198, 387 )
-collision_layer = 32
-collision_mask = 11
+collision_layer = 0
+collision_mask = 10
 script = ExtResource( 3 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 scale = Vector2( 0.5, 0.5 )
 frames = SubResource( 1 )
 animation = "walk"
-frame = 1
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

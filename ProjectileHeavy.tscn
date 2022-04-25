@@ -1,0 +1,75 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://assets/Mages Character Pack/Mage 1/16x16 Mage 1 attacks.png" type="Texture" id=1]
+[ext_resource path="res://ProjectileHeavy.gd" type="Script" id=2]
+
+[sub_resource type="AtlasTexture" id=15]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 0, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=12]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 256, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=13]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 320, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=14]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 384, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=11]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 64, 0, 64, 64 )
+
+[sub_resource type="SpriteFrames" id=8]
+animations = [ {
+"frames": [ SubResource( 15 ) ],
+"loop": true,
+"name": "start",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 12 ), SubResource( 13 ), SubResource( 14 ) ],
+"loop": true,
+"name": "fizzle",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 11 ) ],
+"loop": true,
+"name": "heavySpell",
+"speed": 3.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=9]
+extents = Vector2( 15.5, 9.375 )
+
+[node name="ProjectileHeavy" type="KinematicBody2D"]
+collision_layer = 8
+collision_mask = 43
+script = ExtResource( 2 )
+
+[node name="ProjectileHeavyAnimation" type="AnimatedSprite" parent="."]
+scale = Vector2( 2, 2 )
+frames = SubResource( 8 )
+animation = "start"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0.5, -2.625 )
+shape = SubResource( 9 )
+
+[node name="FizzleTimer" type="Timer" parent="."]
+wait_time = 1.3
+one_shot = true
+
+[node name="RemoveTimer" type="Timer" parent="."]
+wait_time = 0.3
+one_shot = true
+
+[connection signal="timeout" from="FizzleTimer" to="." method="_on_FizzleTimer_timeout"]
+[connection signal="timeout" from="RemoveTimer" to="." method="_on_RemoveTimer_timeout"]
