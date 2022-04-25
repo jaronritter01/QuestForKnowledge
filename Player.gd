@@ -30,9 +30,10 @@ func shoot_projectile():
 func shoot_heavy():
 	var spell = heavy.instance()
 	var scence = get_tree().current_scene
-	spell.position.x = self.position.x + (10 * facing)
-	spell.position.y = self.position.y
+	
 	scence.add_child(spell)
+	spell.position.x = self.position.x + (10 * facing)
+	spell.position.y = self.position.y - 2 
 	spell.shoot(facing)
 	
 func _physics_process(_delta):

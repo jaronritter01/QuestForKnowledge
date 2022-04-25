@@ -10,13 +10,11 @@ func shoot(direction):
 	$ProjectileHeavyAnimation.play("heavySpell")
 	var temp = global_transform
 	var scene = get_tree().current_scene
+	global_transform = temp
+	position.x += direction * 45
+	position.y += 6
 	get_parent().remove_child(self)
 	scene.add_child(self)
-	global_transform = temp
-	
-	position.x += direction * 40
-	position.y += 6
-	set_physics_process(true)
 	$FizzleTimer.start()
 
 func _physics_process(_delta):

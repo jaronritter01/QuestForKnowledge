@@ -1,9 +1,8 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://tileset_new_1.tres" type="TileSet" id=1]
 [ext_resource path="res://Player.tscn" type="PackedScene" id=2]
-[ext_resource path="res://assets/background/set2_background.png" type="Texture" id=3]
-[ext_resource path="res://assets/background/set2_tiles.png" type="Texture" id=4]
+[ext_resource path="res://assets/env/BG/1.png" type="Texture" id=3]
 [ext_resource path="res://HUD.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Slime.tscn" type="PackedScene" id=6]
 
@@ -60,45 +59,12 @@ shape = SubResource( 1 )
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 
-[node name="PurpleSky" type="ParallaxLayer" parent="ParallaxBackground"]
-motion_mirroring = Vector2( 1280, 960 )
+[node name="Sky" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_mirroring = Vector2( 640, 704 )
 
-[node name="Sprite" type="Sprite" parent="ParallaxBackground/PurpleSky"]
-position = Vector2( -8, -277 )
-scale = Vector2( 2, 2 )
+[node name="Sprite" type="Sprite" parent="ParallaxBackground/Sky"]
+scale = Vector2( 8, 4 )
 texture = ExtResource( 3 )
-centered = false
-
-[node name="farBlock" type="ParallaxLayer" parent="ParallaxBackground"]
-motion_scale = Vector2( 0.1, 0.1 )
-motion_mirroring = Vector2( 2560, 1920 )
-
-[node name="Sprite" type="Sprite" parent="ParallaxBackground/farBlock"]
-modulate = Color( 0.513726, 0.396078, 0.564706, 0.780392 )
-position = Vector2( -377, -613 )
-scale = Vector2( 4, 4 )
-texture = ExtResource( 4 )
-centered = false
-
-[node name="midBlocks" type="ParallaxLayer" parent="ParallaxBackground"]
-motion_scale = Vector2( 0.4, 0.4 )
-motion_mirroring = Vector2( 1600, 1200 )
-
-[node name="Sprite" type="Sprite" parent="ParallaxBackground/midBlocks"]
-modulate = Color( 0.894118, 0.807843, 0.933333, 0.780392 )
-position = Vector2( -67, -223 )
-scale = Vector2( 2.5, 2.5 )
-texture = ExtResource( 4 )
-centered = false
-
-[node name="nearBy" type="ParallaxLayer" parent="ParallaxBackground"]
-motion_scale = Vector2( 0.7, 0.7 )
-motion_mirroring = Vector2( 1120, 840 )
-
-[node name="Sprite" type="Sprite" parent="ParallaxBackground/nearBy"]
-position = Vector2( -24, -173 )
-scale = Vector2( 1.75, 1.75 )
-texture = ExtResource( 4 )
 centered = false
 
 [node name="Enemies" type="Node2D" parent="."]

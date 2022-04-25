@@ -50,6 +50,8 @@ animations = [ {
 extents = Vector2( 15.5, 9.375 )
 
 [node name="ProjectileHeavy" type="KinematicBody2D"]
+collision_layer = 8
+collision_mask = 43
 script = ExtResource( 2 )
 
 [node name="ProjectileHeavyAnimation" type="AnimatedSprite" parent="."]
