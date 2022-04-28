@@ -4,7 +4,7 @@ extends KinematicBody2D
 var velocity = Vector2.ZERO
 const SPEED = 150
 const GRAVITY = 30
-const JUMP = -600
+const JUMP = -500
 onready var timer = get_node("Timer")
 onready var hitTimer = get_node("HitTimer")
 var firing = false

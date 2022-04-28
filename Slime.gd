@@ -4,8 +4,10 @@ const GRAVITY = 30
 var SPEED = 50
 var velocity = Vector2.ZERO
 var health = 1
+const JUMP_FORCE = -500
 export var direction = -1
 export var can_fall = true
+var jumped = false
 
 func _ready():
 	$FloorDetector.position.x = $CollisionShape2D.shape.get_extents().x * direction
@@ -18,16 +20,20 @@ func _ready():
 		set_modulate(Color(1, 1, 15))
 
 func _physics_process(delta):
-	if $FloorDetector.get_collider() != null: 
-		if $FloorDetector.get_collider().name != "TileMap" and $FloorDetector.get_collider().name != "TileMap2":
-			print($FloorDetector.get_collider())
 	if is_on_wall() or not $FloorDetector.is_colliding() and not can_fall and is_on_floor():
 		flip()
 	
 	velocity.y += GRAVITY
-	velocity.x =  SPEED * direction
+	if(not jumped):
+		velocity.x =  SPEED * direction
 	### NOTE: must tell what direction is up for the is_on_wall() to work
 	velocity = move_and_slide(velocity, Vector2.UP)
+	
+	for i in get_slide_count():
+		var collision = get_slide_collision(i)
+		var colliders = ["TileMap", "TileMap2", "OneWayGround"]
+		if collision.collider.name in colliders:
+			velocity.x =  SPEED * direction
 	
 func handle_death():
 	SPEED = 0
@@ -81,3 +87,18 @@ func flip():
 	direction *= -1
 	$AnimatedSprite.flip_h = not $AnimatedSprite.flip_h
 	$FloorDetector.position.x = $CollisionShape2D.shape.get_extents().x * direction
+
+
+func _on_Area2D_body_entered(body):
+	if body.name == "Player":
+		var player = body.global_transform.origin
+		var slime = global_transform.origin
+		if not jumped and ((player.x < slime.x and direction < 0) or (player.x > slime.x and direction > 0)):
+			jumped = true
+			velocity.x = direction * 130
+			velocity.y = JUMP_FORCE
+			$JumpTimer.start()
+
+
+func _on_JumpTimer_timeout():
+	jumped = false
