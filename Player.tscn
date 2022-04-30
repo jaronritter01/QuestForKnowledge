@@ -20,7 +20,6 @@ shape = SubResource( 1 )
 [node name="PlayerAnimations" type="AnimatedSprite" parent="."]
 frames = ExtResource( 1 )
 animation = "idle_g"
-frame = 4
 playing = true
 offset = Vector2( 1, -7 )
 

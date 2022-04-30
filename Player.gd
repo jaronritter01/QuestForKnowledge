@@ -108,10 +108,12 @@ func _physics_process(_delta):
 			$PlayerAnimations.play("walk_a")
 			$PlayerAnimations.speed_scale = 1.3
 	
+	var snap = Vector2.DOWN * 16 if jumpCount == 0 else Vector2.ZERO
+	
 	### might play with this
 	velocity.y = GRAVITY + velocity.y
 
-	velocity = move_and_slide(velocity, Vector2.UP)
+	velocity = move_and_slide_with_snap(velocity, snap, Vector2.UP, true)
 
 	velocity.x = lerp(velocity.x, 0, .75)
 
@@ -172,7 +174,8 @@ func _on_FallZone_body_entered(_body):
 		position.x = 50
 		position.y = 50
 	else:
-		get_tree().change_scene("res://BaseLevel.tscn")
+		var currentScene = get_tree().current_scene.name
+		get_tree().change_scene("res://" + currentScene +  ".tscn")
 
 
 func _on_HitTimer_timeout():

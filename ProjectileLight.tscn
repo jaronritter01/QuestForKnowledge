@@ -32,7 +32,7 @@ height = 5.00001
 
 [node name="ProjectileLight" type="KinematicBody2D"]
 collision_layer = 8
-collision_mask = 34
+collision_mask = 2
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_group_": true
@@ -41,6 +41,7 @@ __meta__ = {
 [node name="ProjectileLightAnimation" type="AnimatedSprite" parent="."]
 frames = SubResource( 4 )
 animation = "projectile"
+frame = 2
 speed_scale = 2.0
 playing = true
 

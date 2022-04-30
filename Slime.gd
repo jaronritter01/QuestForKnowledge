@@ -19,7 +19,7 @@ func _ready():
 	if not can_fall:
 		set_modulate(Color(1, 1, 15))
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	if is_on_wall() or not $FloorDetector.is_colliding() and not can_fall and is_on_floor():
 		flip()
 	
