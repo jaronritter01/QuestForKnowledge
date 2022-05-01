@@ -21,7 +21,7 @@ _global_script_class_icons={
 [application]
 
 config/name="QuestForKnowledge"
-run/main_scene="res://BaseLevel.tscn"
+run/main_scene="res://OpeningScene.tscn"
 config/icon="res://icon.png"
 
 [gdnative]

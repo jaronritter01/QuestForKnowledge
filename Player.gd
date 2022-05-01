@@ -211,5 +211,4 @@ func _on_HeavyTimer_timeout():
 func _on_EndZone_body_entered(body):
 	var knight = get_tree().get_root().get_child(0).get_child(7).get_child(3)
 	if knight == null:
-		var currentScene = get_tree().current_scene.name
-		get_tree().change_scene("res://" + currentScene +  ".tscn")
+		get_tree().change_scene("res://EndScene.tscn")
