@@ -465,7 +465,7 @@ extents = Vector2( 51, 140 )
 [node name="HUD" parent="." instance=ExtResource( 5 )]
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
-position = Vector2( 58, 538 )
+position = Vector2( 3008, 533 )
 z_index = 2
 
 [node name="Camera2D" type="Camera2D" parent="Player"]

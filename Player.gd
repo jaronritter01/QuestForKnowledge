@@ -210,5 +210,6 @@ func _on_HeavyTimer_timeout():
 
 func _on_EndZone_body_entered(body):
 	var knight = get_tree().get_root().get_child(0).get_child(7).get_child(3)
+	### getting a funky error on scene change
 	if knight == null:
 		get_tree().change_scene("res://EndScene.tscn")
