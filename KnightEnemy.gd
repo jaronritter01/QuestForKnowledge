@@ -26,13 +26,15 @@ enum {
 func _ready():
 	state = WALKING
 	$FloorChecker.position.x = $CollisionShape2D.shape.get_extents().x * facing
-	$AnimatedSprite/SwordArea/SwordHitBox.position.x = ($CollisionShape2D.shape.get_extents().x * facing) + (facing * 12)
+	$AnimatedSprite/SwordArea/SwordHitBox.position.x = ($CollisionShape2D.shape.get_extents().x * facing) + (facing * 9)
 	if facing == -1:
 		$AnimatedSprite.flip_h = true
 		
 	$FloorChecker.enabled = not can_fall
 	
 	
+func is_dead():
+	return dead
 
 func _physics_process(_delta):
 	if health == 0:
@@ -89,6 +91,11 @@ func _physics_process(_delta):
 		state = IDLE
 	
 	elif state == DEAD:
+		set_collision_layer_bit(5, false)
+		set_collision_mask_bit(0, false)
+		$HitBox.set_collision_layer_bit(5, false)
+		$HitBox.set_collision_mask_bit(0, false)
+		$HitBox.set_collision_mask_bit(3, false)
 		$AnimatedSprite.play("die")
 		velocity.x = 0
 		if not dead:
@@ -102,7 +109,7 @@ func flip():
 	facing *= -1
 	$AnimatedSprite.flip_h = not $AnimatedSprite.flip_h
 	$FloorChecker.position.x = $CollisionShape2D.shape.get_extents().x * facing
-	$AnimatedSprite/SwordArea/SwordHitBox.position.x = ($CollisionShape2D.shape.get_extents().x * facing) + (facing * 12)
+	$AnimatedSprite/SwordArea/SwordHitBox.position.x = ($CollisionShape2D.shape.get_extents().x * facing) + (facing * 9)
 
 
 func _on_AttackTimer_timeout():
