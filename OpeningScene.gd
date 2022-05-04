@@ -8,4 +8,5 @@ func _ready():
 func _on_ChangeSceneBtn_pressed():
 	if not $ClickSound.playing:
 		$ClickSound.play()
+# warning-ignore:return_value_discarded
 	get_tree().change_scene("res://BaseLevel.tscn")

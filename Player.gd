@@ -21,6 +21,7 @@ var can_hover = true
 var current_item = 1
 var potion_count = 0
 var staff_count = 0
+var is_powered_up = false
 onready var currentScene = get_tree().current_scene
 onready var hud = get_tree().get_root().get_node(currentScene.name).get_node("HUD")
 
@@ -126,13 +127,13 @@ func _physics_process(_delta):
 			
 	if Input.is_action_just_pressed("use_item"):
 		if current_item == POTION and potion_count > 0 and lives < 3:
-			print(lives)
 			potion_count -= 1
 			lives += 1
 			hide_show_lives()
 			hud.get_node("PotionCountLabel").text = str(potion_count)
-		elif current_item == STAFF and staff_count > 0:
+		elif current_item == STAFF and staff_count > 0 and not is_powered_up:
 			staff_count -= 1
+			is_powered_up = true
 			hud.get_node("StaffCountLabel").text = str(potion_count)
 
 	### handle some animatons stuff
