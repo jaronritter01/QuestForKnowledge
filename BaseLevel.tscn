@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://tileset_new_1.tres" type="TileSet" id=1]
 [ext_resource path="res://Player.tscn" type="PackedScene" id=2]
@@ -11,6 +11,9 @@
 [ext_resource path="res://assets/env/Tileset_new.png" type="Texture" id=9]
 [ext_resource path="res://MovingPlatform.tscn" type="PackedScene" id=10]
 [ext_resource path="res://KnightEnemy.tscn" type="PackedScene" id=11]
+[ext_resource path="res://BaseLevel.gd" type="Script" id=12]
+[ext_resource path="res://assets/sounds/bg_music.mp3" type="AudioStream" id=13]
+[ext_resource path="res://Potion.tscn" type="PackedScene" id=14]
 
 [sub_resource type="TileSet" id=2]
 0/name = "Tileset_new.png 0"
@@ -461,11 +464,12 @@ extents = Vector2( 2510.5, 85 )
 extents = Vector2( 51, 140 )
 
 [node name="BaseLevel" type="Node2D"]
+script = ExtResource( 12 )
 
 [node name="HUD" parent="." instance=ExtResource( 5 )]
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
-position = Vector2( 3132, 413 )
+position = Vector2( 3192, 567 )
 z_index = 2
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
@@ -615,6 +619,18 @@ move_to = Vector2( 0, -290 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EndZone"]
 position = Vector2( 3605, 499 )
 shape = SubResource( 5 )
+
+[node name="BackgroundMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 13 )
+volume_db = -30.784
+
+[node name="Items" type="Node2D" parent="."]
+
+[node name="Potion" parent="Items" instance=ExtResource( 14 )]
+position = Vector2( 424, 210 )
+
+[node name="Potion2" parent="Items" instance=ExtResource( 14 )]
+position = Vector2( 3536, 624 )
 
 [connection signal="body_entered" from="FallZone" to="Player" method="_on_FallZone_body_entered"]
 [connection signal="body_entered" from="EndZone" to="Player" method="_on_EndZone_body_entered"]

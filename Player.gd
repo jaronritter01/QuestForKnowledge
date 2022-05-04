@@ -18,6 +18,16 @@ var lives = 3
 var player = self
 var can_move = true
 var can_hover = true
+var current_item = 1
+var potion_count = 0
+var staff_count = 0
+onready var currentScene = get_tree().current_scene
+onready var hud = get_tree().get_root().get_node(currentScene.name).get_node("HUD")
+
+enum {
+	STAFF = 0,
+	POTION = 1
+}
 
 func shoot_projectile():
 	var spell = projectile.instance()
@@ -25,6 +35,8 @@ func shoot_projectile():
 	spell.position.x = self.position.x + (10 * facing)
 	spell.position.y = self.position.y
 	scence.add_child(spell)
+	if not $LightSpellFx.playing:
+		$LightSpellFx.play()
 	spell.shoot(facing)
 
 func shoot_heavy():
@@ -55,8 +67,12 @@ func _physics_process(_delta):
 		
 		if Input.is_action_just_pressed("jump") and (is_on_floor() or jumpCount < 2):
 			if jumpCount == 0:
+				if not $JumpFx.playing:
+					$JumpFx.play()
 				velocity.y = JUMP
 			if jumpCount == 1:
+				if not $JumpFx.playing:
+					$JumpFx.play()
 				velocity.y = (JUMP * .70)
 			jumpCount += 1
 		
@@ -72,6 +88,8 @@ func _physics_process(_delta):
 			
 		if Input.is_action_just_pressed("heavy_attack") and not firing and not hit:
 			firing = true
+			if not $HeavySpellFx.playing:
+				$HeavySpellFx.play()
 			if is_on_floor():
 				$PlayerAnimations.speed_scale = 2;
 				$PlayerAnimations.play("attack_g")
@@ -81,6 +99,8 @@ func _physics_process(_delta):
 			$HeavyTimer.start()
 			
 		if Input.is_action_just_pressed("hover") and not is_on_floor() and can_hover:
+			if not $HoverFx.playing:
+				$HoverFx.play()
 			$HoverTimer.start()
 			
 		if Input.is_action_pressed("hover") and not is_on_floor() and can_hover:
@@ -89,6 +109,31 @@ func _physics_process(_delta):
 				$PlayerAnimations.play("idle_a")
 			hover = true
 			velocity.y = -GRAVITY
+		
+	if Input.is_action_just_pressed("cycleItems"):
+		if current_item == STAFF:
+			hud.get_node("StaffIcon").visible = false
+			hud.get_node("StaffCountLabel").visible = false
+			hud.get_node("PotionIcon").visible = true
+			hud.get_node("PotionCountLabel").visible = true
+			current_item = POTION
+		elif current_item == POTION:
+			hud.get_node("StaffIcon").visible = true
+			hud.get_node("StaffCountLabel").visible = true
+			hud.get_node("PotionIcon").visible = false
+			hud.get_node("PotionCountLabel").visible = false
+			current_item = STAFF
+			
+	if Input.is_action_just_pressed("use_item"):
+		if current_item == POTION and potion_count > 0 and lives < 3:
+			print(lives)
+			potion_count -= 1
+			lives += 1
+			hide_show_lives()
+			hud.get_node("PotionCountLabel").text = str(potion_count)
+		elif current_item == STAFF and staff_count > 0:
+			staff_count -= 1
+			hud.get_node("StaffCountLabel").text = str(potion_count)
 
 	### handle some animatons stuff
 	if velocity.x > 5 or velocity.x < -5:
@@ -101,6 +146,7 @@ func _physics_process(_delta):
 	
 	if not hover and not hit and not firing:
 		if velocity.x < 5 and velocity.x > -5:
+			$HoverFx.stop()
 			$PlayerAnimations.play("idle_g")
 			$PlayerAnimations.speed_scale = 1.3
 		
@@ -119,12 +165,21 @@ func _physics_process(_delta):
 
 
 func hide_show_lives():
-	var hud = self.get_parent().get_child(0)
-	if lives == 2:
+	if lives == 3:
+		hud.get_child(3).show()
+		hud.get_child(2).show()
+		hud.get_child(1).show()
+	elif lives == 2:
 		hud.get_child(3).hide()
+		hud.get_child(2).show()
+		hud.get_child(1).show()
 	elif lives == 1:
+		hud.get_child(3).hide()
 		hud.get_child(2).hide()
+		hud.get_child(1).show()
 	else:
+		hud.get_child(3).hide()
+		hud.get_child(2).hide()
 		hud.get_child(1).hide()
 
 
@@ -149,10 +204,14 @@ func hurt(amount):
 	lives -= amount
 	hide_show_lives()
 	if lives <= 0:
+		if not $DeathFx.playing:
+			$DeathFx.play()
 		set_collision_layer_bit(0, false)
 		set_collision_mask_bit(5, false)
 		reset()
 	else:
+		if not $HitFx.playing:
+			$HitFx.play()
 		hitTimer.start()
 
 func reset():
@@ -209,7 +268,9 @@ func _on_HeavyTimer_timeout():
 	
 
 func _on_EndZone_body_entered(body):
-	var knight = get_tree().get_root().get_child(0).get_child(7).get_child(3)
-	### getting a funky error on scene change
-	if knight == null:
-		get_tree().change_scene("res://EndScene.tscn")
+	var currentScene = get_tree().current_scene.name
+	var knight = get_tree().get_root().get_node(currentScene).get_node("Enemies").get_node("KnightEnemy")
+	if body.name == "Player":
+		### getting a funky error on scene change
+		if knight == null:
+			get_tree().change_scene("res://EndScene.tscn")

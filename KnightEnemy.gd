@@ -10,6 +10,7 @@ const JUMP = -500
 var state = 0
 var attacked = false
 var dead = false
+var is_on_screen = false
 
 # Knight States
 enum {
@@ -37,13 +38,15 @@ func is_dead():
 	return dead
 
 func _physics_process(_delta):
-	if health == 0:
+	if health <= 0:
 		state = DEAD
 	
 	var player = get_tree().get_root().get_child(0).get_child(1)
 	var distance_to_hit = look(player.position) if look(player.position) else 50
 	
 	if state == IDLE:
+		$SwordHitSoundFX.stop()
+		$SwordHitSoundFX.stop()
 		$AnimatedSprite.play("idle")
 		### Transition from idle to walking
 		if velocity.x > 5 or velocity.x < -5:
@@ -54,11 +57,15 @@ func _physics_process(_delta):
 			state = ATTACKING
 			
 	elif state == WALKING:
-		$AnimatedSprite.play("walk")
-		velocity.x = SPEED * facing
+		$SwordHitSoundFX.stop()
+		if is_on_screen:
+			$AnimatedSprite.play("walk")
+			if not $ArmorWalkSound.playing:
+				$ArmorWalkSound.play()
+			velocity.x = SPEED * facing
 		if is_on_wall() or not $FloorChecker.is_colliding() and not can_fall and is_on_floor():
 			flip()
-			
+				
 		for i in get_slide_count():
 			var collision = get_slide_collision(i)
 			var colliders = ["TileMap", "TileMap2", "OneWayGround"]
@@ -66,6 +73,7 @@ func _physics_process(_delta):
 				velocity.x =  SPEED * facing
 		
 		### transition to jump
+		### NOTE: this is not acutally implemented 
 		if (velocity.y > 5 or velocity.y < -5) and not is_on_floor():
 			state = JUMPING
 			
@@ -78,17 +86,20 @@ func _physics_process(_delta):
 			state = IDLE
 			
 	elif state == ATTACKING:
+		### TODO: make the not hit sound play
 		$AnimatedSprite.play("attack")
 		$AnimatedSprite/SwordArea/SwordHitBox.disabled = false
+		if not $SwordHitSoundFX.playing:
+			$SwordHitSoundFX.play()
 		velocity.x = (SPEED * .3) * facing
 		if not attacked:
 			attacked = true
 			$AttackTimer.start()
 			
 	elif state == HIT:
+		state = IDLE
 		$AnimatedSprite.play("hurt")
 		hit(player)
-		state = IDLE
 	
 	elif state == DEAD:
 		set_collision_layer_bit(5, false)
@@ -163,3 +174,11 @@ func _on_SwordArea_body_entered(body):
 	if body.name == "Player":
 		body.recoil(global_transform.origin.x)
 		body.hurt(1)
+
+
+func _on_VisibilityNotifier2D_screen_entered():
+	is_on_screen = true
+
+
+func _on_VisibilityNotifier2D_screen_exited():
+	is_on_screen = false

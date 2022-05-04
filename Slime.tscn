@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://assets/enemies_edited/slimeGreen_walk.png" type="Texture" id=1]
 [ext_resource path="res://assets/enemies_edited/slimeGreen.png" type="Texture" id=2]
@@ -6,6 +6,8 @@
 [ext_resource path="res://assets/enemies_edited/slime_hit.png" type="Texture" id=4]
 [ext_resource path="res://assets/enemies_edited/slimeGreen_squashed.png" type="Texture" id=5]
 [ext_resource path="res://assets/enemies_edited/slimeGreen_dead.png" type="Texture" id=6]
+[ext_resource path="res://assets/sounds/slime_walk.wav" type="AudioStream" id=7]
+[ext_resource path="res://assets/sounds/slime_jump.wav" type="AudioStream" id=8]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -44,7 +46,6 @@ script = ExtResource( 3 )
 scale = Vector2( 0.5, 0.5 )
 frames = SubResource( 1 )
 animation = "walk"
-frame = 1
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -82,8 +83,21 @@ polygon = PoolVector2Array( 5, -82, -54, -74, -80, -43, -88, 5, -62, 8, -50, 9, 
 
 [node name="JumpTimer" type="Timer" parent="."]
 
+[node name="SlimeWalkSoundFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 7 )
+volume_db = -20.8
+
+[node name="JumpSoundFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 8 )
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
+position = Vector2( 8.76188e-06, 0.5 )
+scale = Vector2( 1.6, 0.95 )
+
 [connection signal="body_entered" from="SquashChecker" to="." method="_on_SquashChecker_body_entered"]
 [connection signal="body_entered" from="SidesChecker" to="." method="_on_SidesChecker_body_entered"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 [connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
 [connection signal="timeout" from="JumpTimer" to="." method="_on_JumpTimer_timeout"]
+[connection signal="screen_entered" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_entered"]
+[connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]

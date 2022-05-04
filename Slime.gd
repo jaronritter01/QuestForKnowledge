@@ -8,6 +8,7 @@ const JUMP_FORCE = -500
 export var direction = -1
 export var can_fall = true
 var jumped = false
+var on_screen = false
 
 func _ready():
 	$FloorDetector.position.x = $CollisionShape2D.shape.get_extents().x * direction
@@ -33,6 +34,8 @@ func _physics_process(_delta):
 		var collision = get_slide_collision(i)
 		var colliders = ["TileMap", "TileMap2", "OneWayGround"]
 		if collision.collider.name in colliders:
+			if not $SlimeWalkSoundFX.playing and on_screen:
+				$SlimeWalkSoundFX.play()
 			velocity.x =  SPEED * direction
 	
 func handle_death():
@@ -95,6 +98,8 @@ func _on_Area2D_body_entered(body):
 		var slime = global_transform.origin
 		if not jumped and ((player.x < slime.x and direction < 0) or (player.x > slime.x and direction > 0)):
 			jumped = true
+			if not $JumpSoundFX.playing:
+				$JumpSoundFX.play()
 			velocity.x = direction * 130
 			velocity.y = JUMP_FORCE
 			$JumpTimer.start()
@@ -102,3 +107,11 @@ func _on_Area2D_body_entered(body):
 
 func _on_JumpTimer_timeout():
 	jumped = false
+
+
+func _on_VisibilityNotifier2D_screen_entered():
+	on_screen = true
+
+
+func _on_VisibilityNotifier2D_screen_exited():
+	on_screen = false

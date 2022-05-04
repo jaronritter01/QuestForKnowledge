@@ -1,7 +1,13 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://PlayerSpriteFrames.tres" type="SpriteFrames" id=1]
 [ext_resource path="res://Player.gd" type="Script" id=2]
+[ext_resource path="res://assets/sounds/fireballSoundEdit.wav" type="AudioStream" id=3]
+[ext_resource path="res://assets/sounds/ice_spell_fx.wav" type="AudioStream" id=4]
+[ext_resource path="res://assets/sounds/jump.wav" type="AudioStream" id=5]
+[ext_resource path="res://assets/sounds/hit.wav" type="AudioStream" id=6]
+[ext_resource path="res://assets/sounds/death.mp3" type="AudioStream" id=7]
+[ext_resource path="res://assets/sounds/hover_new.wav" type="AudioStream" id=8]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 7.0
@@ -20,7 +26,7 @@ shape = SubResource( 1 )
 [node name="PlayerAnimations" type="AnimatedSprite" parent="."]
 frames = ExtResource( 1 )
 animation = "idle_g"
-frame = 2
+frame = 4
 playing = true
 offset = Vector2( 1, -7 )
 
@@ -47,6 +53,31 @@ one_shot = true
 [node name="HeavyTimer" type="Timer" parent="."]
 wait_time = 0.8
 one_shot = true
+
+[node name="LightSpellFx" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+volume_db = -11.648
+pitch_scale = 1.52
+
+[node name="HeavySpellFx" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+volume_db = -17.472
+
+[node name="JumpFx" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+volume_db = -19.143
+
+[node name="HitFx" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+volume_db = -8.32
+
+[node name="DeathFx" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
+volume_db = -12.48
+
+[node name="HoverFx" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 8 )
+volume_db = -4.992
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 [connection signal="timeout" from="HitTimer" to="." method="_on_HitTimer_timeout"]

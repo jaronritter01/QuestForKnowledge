@@ -1,7 +1,8 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://assets/Mages Character Pack/Mage 1/16x16 Mage 1 attacks.png" type="Texture" id=1]
 [ext_resource path="res://ProjectileHeavy.gd" type="Script" id=2]
+[ext_resource path="res://assets/sounds/ice_break.wav" type="AudioStream" id=3]
 
 [sub_resource type="AtlasTexture" id=15]
 flags = 4
@@ -70,6 +71,10 @@ one_shot = true
 [node name="RemoveTimer" type="Timer" parent="."]
 wait_time = 0.3
 one_shot = true
+
+[node name="IceBreakingSoundFx" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 3 )
+volume_db = 1.0
 
 [connection signal="timeout" from="FizzleTimer" to="." method="_on_FizzleTimer_timeout"]
 [connection signal="timeout" from="RemoveTimer" to="." method="_on_RemoveTimer_timeout"]

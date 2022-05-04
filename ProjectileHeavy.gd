@@ -19,6 +19,8 @@ func shoot(direction):
 
 func fizzle():
 	$ProjectileHeavyAnimation.play("fizzle")
+	if not $IceBreakingSoundFx.playing:
+		$IceBreakingSoundFx.play()
 	$RemoveTimer.start()
 	
 func _physics_process(_delta):
@@ -27,7 +29,7 @@ func _physics_process(_delta):
 
 
 func _on_FizzleTimer_timeout():
-	$ProjectileHeavyAnimation.play("fizzle")
+	fizzle()
 	$RemoveTimer.start()
 
 
