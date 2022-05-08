@@ -58,11 +58,10 @@ func _physics_process(_delta):
 			
 	elif state == WALKING:
 		$SwordHitSoundFX.stop()
-		if is_on_screen:
-			$AnimatedSprite.play("walk")
-			if not $ArmorWalkSound.playing:
-				$ArmorWalkSound.play()
-			velocity.x = SPEED * facing
+		$AnimatedSprite.play("walk")
+		if not $ArmorWalkSound.playing and is_on_screen:
+			$ArmorWalkSound.play()
+		velocity.x = SPEED * facing
 		if is_on_wall() or not $FloorChecker.is_colliding() and not can_fall and is_on_floor():
 			flip()
 				
@@ -108,6 +107,8 @@ func _physics_process(_delta):
 		$HitBox.set_collision_mask_bit(0, false)
 		$HitBox.set_collision_mask_bit(3, false)
 		$AnimatedSprite.play("die")
+		if not $DeathSound.playing:
+			$DeathSound.play()
 		velocity.x = 0
 		if not dead:
 			dead = true

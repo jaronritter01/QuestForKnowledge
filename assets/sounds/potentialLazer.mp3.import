@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/potentialLazer.mp3-4f9d833076887d384cb5b472092b41d7.mp3str"
+
+[deps]
+
+source_file="res://assets/sounds/potentialLazer.mp3"
+dest_files=[ "res://.import/potentialLazer.mp3-4f9d833076887d384cb5b472092b41d7.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

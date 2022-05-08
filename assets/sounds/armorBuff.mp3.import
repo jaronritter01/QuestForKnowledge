@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/armorBuff.mp3-a0d93aa119b8ea78f70e7a5cc307f252.mp3str"
+
+[deps]
+
+source_file="res://assets/sounds/armorBuff.mp3"
+dest_files=[ "res://.import/armorBuff.mp3-a0d93aa119b8ea78f70e7a5cc307f252.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

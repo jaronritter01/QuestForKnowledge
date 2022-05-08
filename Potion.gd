@@ -9,12 +9,14 @@ func _ready():
 
 func _on_Area2D_body_entered(body):
 	if body.name == "Player":
-		body.potion_count += 1
-		hud.get_node("PotionCountLabel").text = str(body.potion_count)
-		### not playing idk why
 		if not $AudioStreamPlayer.playing:
 			$AudioStreamPlayer.play()
-		queue_free()
+		body.potion_count += 1
+		hud.get_node("PotionCountLabel").text = str(body.potion_count)
+		$Sprite/Area2D.set_collision_layer_bit(2, false)
+		$Sprite/Area2D.set_collision_mask_bit(0, false)
+		$AnimationPlayer.play("Collect")
+		$CollectTimer.start()
 
 
 func _on_VisibilityNotifier2D_screen_entered():
@@ -23,3 +25,7 @@ func _on_VisibilityNotifier2D_screen_entered():
 
 func _on_VisibilityNotifier2D_screen_exited():
 	is_on_screen = false
+
+
+func _on_CollectTimer_timeout():
+	queue_free()

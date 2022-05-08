@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/fistThrowSoundFx.wav-ef35c3893eea8929bd736a92546f1873.sample"
+
+[deps]
+
+source_file="res://assets/sounds/fistThrowSoundFx.wav"
+dest_files=[ "res://.import/fistThrowSoundFx.wav-ef35c3893eea8929bd736a92546f1873.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

@@ -9,6 +9,7 @@ export var direction = -1
 export var can_fall = true
 var jumped = false
 var on_screen = false
+var is_dead = false
 
 func _ready():
 	$FloorDetector.position.x = $CollisionShape2D.shape.get_extents().x * direction
@@ -55,6 +56,7 @@ func _on_SquashChecker_body_entered(body):
 		health -= 1
 		
 	if health <= 0:
+		is_dead = true
 		$Timer.start()
 
 
@@ -79,6 +81,7 @@ func _on_SidesChecker_body_entered(body):
 	
 	if health <= 0:
 		$AnimatedSprite.play("hit")
+		is_dead = true
 		handle_death()
 		$Timer.start()
 

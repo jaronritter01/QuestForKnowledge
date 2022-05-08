@@ -74,7 +74,7 @@ func _physics_process(_delta):
 			if jumpCount == 1:
 				if not $JumpFx.playing:
 					$JumpFx.play()
-				velocity.y = (JUMP * .70)
+				velocity.y = (JUMP * .75)
 			jumpCount += 1
 		
 		if Input.is_action_just_pressed("fire_projectile_light") and not firing and not hit:
@@ -110,6 +110,9 @@ func _physics_process(_delta):
 				$PlayerAnimations.play("idle_a")
 			hover = true
 			velocity.y = -GRAVITY
+			
+		if Input.is_action_just_released("hover"):
+			$HoverFx.stop()
 		
 	if Input.is_action_just_pressed("cycleItems"):
 		if current_item == STAFF:
@@ -127,6 +130,8 @@ func _physics_process(_delta):
 			
 	if Input.is_action_just_pressed("use_item"):
 		if current_item == POTION and potion_count > 0 and lives < 3:
+			if not $PotionDrinkFx.playing:
+				$PotionDrinkFx.play()
 			potion_count -= 1
 			lives += 1
 			hide_show_lives()
@@ -155,7 +160,7 @@ func _physics_process(_delta):
 			$PlayerAnimations.play("walk_a")
 			$PlayerAnimations.speed_scale = 1.3
 	
-	var snap = Vector2.DOWN * 16 if jumpCount == 0 else Vector2.ZERO
+	var snap = Vector2.DOWN * 8 if jumpCount == 0 else Vector2.ZERO
 	
 	### might play with this
 	velocity.y = GRAVITY + velocity.y
@@ -234,7 +239,7 @@ func _on_FallZone_body_entered(_body):
 		position.x = 50
 		position.y = 50
 	else:
-		var currentScene = get_tree().current_scene.name
+# warning-ignore:return_value_discarded
 		get_tree().change_scene("res://" + currentScene +  ".tscn")
 
 
@@ -248,7 +253,7 @@ func _on_HitTimer_timeout():
 
 
 func _on_DeathTimer_timeout():
-	var currentScene = get_tree().current_scene.name
+# warning-ignore:return_value_discarded
 	get_tree().change_scene("res://" + currentScene +  ".tscn")
 
 
@@ -269,9 +274,9 @@ func _on_HeavyTimer_timeout():
 	
 
 func _on_EndZone_body_entered(body):
-	var currentScene = get_tree().current_scene.name
-	var knight = get_tree().get_root().get_node(currentScene).get_node("Enemies").get_node("KnightEnemy")
+	var knight = get_tree().get_root().get_node(currentScene.name).get_node("Enemies").get_node("KnightEnemy")
 	if body.name == "Player":
 		### getting a funky error on scene change
 		if knight == null:
+# warning-ignore:return_value_discarded
 			get_tree().change_scene("res://EndScene.tscn")

@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/stoneShifting.mp3-9584231acf0bfe84aebd91f3467c03f8.mp3str"
+
+[deps]
+
+source_file="res://assets/sounds/stoneShifting.mp3"
+dest_files=[ "res://.import/stoneShifting.mp3-9584231acf0bfe84aebd91f3467c03f8.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0
