@@ -24,6 +24,10 @@ config/name="QuestForKnowledge"
 run/main_scene="res://OpeningScene.tscn"
 config/icon="res://icon.png"
 
+[display]
+
+window/size/resizable=false
+
 [gdnative]
 
 singletons=[ "res://addons/godot-git-plugin/git_api.gdnlib" ]

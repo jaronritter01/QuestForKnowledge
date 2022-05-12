@@ -470,7 +470,7 @@ script = ExtResource( 12 )
 [node name="HUD" parent="." instance=ExtResource( 5 )]
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
-position = Vector2( 1754, 82 )
+position = Vector2( 68, 463 )
 z_index = 2
 
 [node name="Camera2D" type="Camera2D" parent="Player"]

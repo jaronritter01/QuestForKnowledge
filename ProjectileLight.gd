@@ -28,9 +28,9 @@ func _physics_process(_delta):
 		var collision = get_slide_collision(i)
 		### this is handling when the projectile hits a wall or floor
 		if collision:
-			if collision.collider.name == "TileMap" or collision.collider.name == "TileMap2":
+			if collision.collider.name == "TileMap" or collision.collider.name == "TileMap2" or collision.collider.name == "PlayerTileMap":
 				queue_free()
-			elif collision.collider.name=="ProjectileHeavy":
+			elif "ProjectileHeavy" in collision.collider.name:
 				collision.collider.fizzle()
 				queue_free()
 

@@ -23,6 +23,7 @@ var potion_count = 0
 var staff_count = 0
 var is_powered_up = false
 onready var currentScene = get_tree().current_scene
+var currentScene1 = "BaseLevel"
 onready var hud = get_tree().get_root().get_node(currentScene.name).get_node("HUD")
 
 enum {
@@ -240,7 +241,8 @@ func _on_FallZone_body_entered(_body):
 		position.y = 50
 	else:
 # warning-ignore:return_value_discarded
-		get_tree().change_scene("res://" + currentScene +  ".tscn")
+		#get_tree().change_scene("res://" + currentScene.name +  ".tscn")
+		get_tree().change_scene("res://" + currentScene1+  ".tscn")
 
 
 func _on_HitTimer_timeout():
@@ -254,7 +256,9 @@ func _on_HitTimer_timeout():
 
 func _on_DeathTimer_timeout():
 # warning-ignore:return_value_discarded
-	get_tree().change_scene("res://" + currentScene +  ".tscn")
+	print(currentScene)
+	#get_tree().change_scene("res://" + currentScene.name +  ".tscn")
+	get_tree().change_scene("res://" + currentScene1+  ".tscn")
 
 
 func _on_DeathAnimation_timeout():
@@ -279,4 +283,4 @@ func _on_EndZone_body_entered(body):
 		### getting a funky error on scene change
 		if knight == null:
 # warning-ignore:return_value_discarded
-			get_tree().change_scene("res://EndScene.tscn")
+			get_tree().change_scene("res://BossScene.tscn")
