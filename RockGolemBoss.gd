@@ -26,11 +26,11 @@ enum {
 	IDLE = 0,
 	WALKING = 1,
 	THROWHANDATTACK = 2,
-	JUMPING = 3,
-	LASERATTACK = 4,
-	HIT = 5,
-	DEAD = 6,
-	BLOCKING = 7
+	BLOCKING = 3
+	JUMPING = 4,
+	LASERATTACK = 5,
+	HIT = 6,
+	DEAD = 7,
 }
 
 enum {
@@ -94,7 +94,6 @@ func _ready():
 
 func _physics_process(_delta):
 	var distance_to_hit = follow() if follow() else 50
-	print(distance_to_hit)
 	if $WallDetector.is_colliding():
 		bounced_off_wall = true
 		flip()
@@ -135,12 +134,16 @@ func _physics_process(_delta):
 			if not attackTimerIsOn:
 				attackTimerIsOn = true
 				$AnimatedSprite.play("handThrow")
+				if not $RockFireSoundFX.playing:
+					$RockFireSoundFX.play()
 				$HandThrowTimer.start()
 		if not startTimerIsOn:
 			startTimerIsOn = true
 			$StartTimer.start()
 	elif state == HIT:
 		$AnimatedSprite.play("hit")
+		if not $BossHitSoundFX.playing:
+			$BossHitSoundFX.play()
 		$ArmOneHitBox.set_collision_mask_bit(3, true)
 		set_modulate(Color(255, 255, 255)) ### CHANGE COLOR
 		if not hit_timer_is_on:
@@ -148,7 +151,11 @@ func _physics_process(_delta):
 			hit_timer_is_on = true
 			$HitTimer.start()
 	elif state == BLOCKING:
-		pass
+		$AnimatedSprite.play("blocking")
+		is_blocking = true
+		if not startTimerIsOn:
+			startTimerIsOn = true
+			$StartTimer.start()
 	elif state == JUMPING:
 		pass
 	elif state == DEAD:
@@ -189,32 +196,32 @@ func _on_HandThowCooldownTimer_timeout():
 			
 func handleHit(body, bodyPart):
 	### register the hit
-	if not hit_timer_is_on and not is_blocking:
-		if bodyPart != ARM and not "RockHandProjectile" in body.name or "ProjectileHeavy" in body.name:
+	if not hit_timer_is_on:
+		print(not is_blocking)
+		if (bodyPart != ARM) and (not is_blocking) and (not "RockHandProjectile" in body.name):
 			state = HIT
 		if "ProjectileLight" in body.name:
-			match bodyPart:
-				HEAD:
-					health -= 3
-				BODY:
-					health -= 1
-				BACK:
-					health -= 2
-				ARM:
-					### this is on purpose as arm should do no damage
-					pass
+			if not is_blocking:
+				match bodyPart:
+					HEAD:
+						health -= 3
+					BODY:
+						health -= 1
+					BACK:
+						health -= 2
 			body.queue_free()
 		elif "ProjectileHeavy" in body.name:
-			match bodyPart:
-				HEAD:
-					health -= 5
-				BODY:
-					health -= 2
-				BACK:
-					health -= 3
-				ARM:
-					### minimal damage with a stronger spell
-					health -= 1
+			if not is_blocking:
+				match bodyPart:
+					HEAD:
+						health -= 5
+					BODY:
+						health -= 2
+					BACK:
+						health -= 3
+					ARM:
+						### minimal damage with a stronger spell
+						health -= 1
 			body.fizzle()
 	if "Player" in body.name:
 		body.hurt(1)
@@ -243,7 +250,7 @@ func _on_DeathTimer_timeout():
 
 
 func _on_HitTimer_timeout():
-	state = randGen.randi_range(0,2)
+	state = randGen.randi_range(0,3)
 	hit_timer_is_on = false
 	is_hit = false
 	set_modulate(Color(1, 1, 1)) ### CHANGE COLOR
@@ -262,7 +269,8 @@ func _on_BlockCooldown_timeout():
 
 func _on_StartTimer_timeout():
 	startTimerIsOn = false
-	state = randGen.randi_range(0,2)
+	is_blocking = false
+	state = randGen.randi_range(0,3)
 
 
 func _on_BounceTimer_timeout():
@@ -270,5 +278,4 @@ func _on_BounceTimer_timeout():
 
 
 func _on_EndTimer_timeout():
-	print("here")
 	get_tree().change_scene("res://EndScene.tscn")

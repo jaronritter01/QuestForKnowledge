@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/stoneThrow.wav-61fa2bf30ce2b04e813d99559d2f23e2.sample"
+
+[deps]
+
+source_file="res://assets/sounds/stoneThrow.wav"
+dest_files=[ "res://.import/stoneThrow.wav-61fa2bf30ce2b04e813d99559d2f23e2.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0
