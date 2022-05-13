@@ -24,7 +24,10 @@ ___________
 - space to hover
 - lmb for a light and fast projectile
 - rmb for a heavy and slower spell 
+- f to toggle current item
+- r to use current item
 - **Tip** dont be afraid to play around with your spells
+- **NOTE** The staff item has no function currently
 
 ## Getting Started
 __________________
@@ -37,6 +40,7 @@ _______________
 This game is still in its infancy, so with that in mind below are some of the changes I would like to make, provided I have time
 
 - I would like to really flush the levels and make them bigger and have more things in them
+- Add more items to the game and give them use 
 - Refactor some of the players code
 - Add a main menu (once more levels are created), like a world selector 
 - Add a story and possibly npc's for the player to interact with
@@ -44,3 +48,13 @@ This game is still in its infancy, so with that in mind below are some of the ch
 - I would also like to make it so that the player can choose a specific mage to play the game with, all of them having different abilities
 - Add a saving system so that you're not restarting every time you play
 
+## Screenshots
+--------------
+
+![Pic of Background](assets/gamebg.png)
+
+
+![Pic of GamePlay](assets/gameplay_ss_1.png)
+
+
+![Pic of Boss](assets/boss_ss_1.png)
