@@ -32,7 +32,7 @@ ___________
 ## Getting Started
 __________________
 
-Head over to [itch.io]() to play the game, thats all!
+Head over to [itch.io](https://jaronritter01.itch.io/the-quest-for-knowledge) to play the game, thats all!
 
 ## Future Plans
 _______________
