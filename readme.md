@@ -58,3 +58,12 @@ This game is still in its infancy, so with that in mind below are some of the ch
 
 
 ![Pic of Boss](assets/boss_ss_1.png)
+
+## Assets
+---------
+
+- Rock Boss - https://darkpixel-kronovi.itch.io/mecha-golem-free​
+- Mage - https://rgsdev.itch.io/pixel-art-animated-mages-character-pack-rgsdev
+- Slime - https://www.kenney.nl/assets
+- Knight - https://rgsdev.itch.io/pixel-art-animated-knight-character-pack-rgsdev/devlog/18...
+- Tiles - https://oddpotatogift.itch.io/32x32-platformer
