@@ -93,7 +93,7 @@ func _ready():
 	state = THROWHANDATTACK
 
 func _physics_process(_delta):
-	var distance_to_hit = follow() if follow() else 50
+	var _distance_to_hit = follow() if follow() else 50
 	if $WallDetector.is_colliding():
 		bounced_off_wall = true
 		flip()
@@ -197,7 +197,6 @@ func _on_HandThowCooldownTimer_timeout():
 func handleHit(body, bodyPart):
 	### register the hit
 	if not hit_timer_is_on:
-		print(not is_blocking)
 		if (bodyPart != ARM) and (not is_blocking) and (not "RockHandProjectile" in body.name):
 			state = HIT
 		if "ProjectileLight" in body.name:
@@ -246,6 +245,7 @@ func _on_BackHitBox_body_entered(body):
 
 
 func _on_DeathTimer_timeout():
+	# warning-ignore:return_value_discarded
 	get_tree().change_scene("res://EndScene.tscn")
 
 
@@ -278,4 +278,5 @@ func _on_BounceTimer_timeout():
 
 
 func _on_EndTimer_timeout():
+	# warning-ignore:return_value_discarded
 	get_tree().change_scene("res://EndScene.tscn")

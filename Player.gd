@@ -242,7 +242,7 @@ func _on_FallZone_body_entered(_body):
 	else:
 # warning-ignore:return_value_discarded
 		#get_tree().change_scene("res://" + currentScene.name +  ".tscn")
-		get_tree().change_scene("res://" + currentScene1+  ".tscn")
+		get_tree().change_scene("res://EndScene.tscn")
 
 
 func _on_HitTimer_timeout():
@@ -256,9 +256,7 @@ func _on_HitTimer_timeout():
 
 func _on_DeathTimer_timeout():
 # warning-ignore:return_value_discarded
-	print(currentScene)
-	#get_tree().change_scene("res://" + currentScene.name +  ".tscn")
-	get_tree().change_scene("res://" + currentScene1+  ".tscn")
+	get_tree().change_scene("res://EndScene.tscn")
 
 
 func _on_DeathAnimation_timeout():
